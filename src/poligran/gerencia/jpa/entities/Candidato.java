@@ -6,8 +6,17 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name="candidato.loadAll", query="SELECT c FROM Candidato c"),
+	@NamedQuery(name="candidato.loadByElection", query="SELECT c FROM Candidato c WHERE c.eleccion.idEleccion =:idEleccion")
+})
 public class Candidato {
 	
 	@Id
@@ -24,6 +33,10 @@ public class Candidato {
 	@Column
 	private Integer numeroLista;
 
+	@ManyToOne(targetEntity=Eleccion.class)
+	@JoinColumn(name="eleccion")
+	private Eleccion eleccion;
+	
 	public Integer getNumID() {
 		return numID;
 	}
@@ -62,5 +75,13 @@ public class Candidato {
 
 	public void setNumeroLista(Integer numeroLista) {
 		this.numeroLista = numeroLista;
+	}
+
+	public Eleccion getEleccion() {
+		return eleccion;
+	}
+
+	public void setEleccion(Eleccion eleccion) {
+		this.eleccion = eleccion;
 	}
 }
