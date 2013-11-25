@@ -23,7 +23,7 @@ import org.hibernate.annotations.NamedQuery;
 	@NamedQuery(name="voto.loadByCandidateElection", query="SELECT v FROM Voto v WHERE " +
 			"v.eleccion.idEleccion =:idEleccion AND v.candidato.numID =:numID"),
 	@NamedQuery(name="voto.loadByElection", query="SELECT v FROM Voto v WHERE " +
-					"v.eleccion.idEleccion =:idEleccion")	
+					"v.eleccion.idEleccion =:idEleccion")
 })
 public class Voto {
 	
