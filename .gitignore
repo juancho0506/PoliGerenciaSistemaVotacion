@@ -1,3 +1,8 @@
+# Archivos que solo se descargan una vez
+
+src/META-INF/persistence.xml
+
+
 #################
 ## Eclipse
 #################
