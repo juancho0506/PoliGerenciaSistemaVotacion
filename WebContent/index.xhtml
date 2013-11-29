@@ -8,47 +8,38 @@
 	xmlns:p="http://primefaces.org/ui">
  
 <h:head>
-	<title>Sistema de Votaciones - Módulo Usuarios</title>
+	<title>Sistema de Votaciones</title>
 </h:head>
 <h:body>
-	<h1>Administración de Usuarios</h1><br/>
+	<h1>Escoga una Eleccion para Votar por un Candidato</h1><br/>
  	<div style="color:red"><h2>#{reserva.message}</h2></div>
  	<h:form>
 	 	<h:panelGrid>
-	 		<h2>Usuarios Registrados</h2>
-	 		<h:dataTable value="#{usuarioBean.usuarios}" var="u">
+	 		<h2>Elecciones Registrados</h2>
+	 		<h:dataTable value="#{votacionesoBean.elecciones}" var="e">
 		 
 		  			<h:column>
 		  				<!-- column header -->
-		  				<f:facet name="header">Username</f:facet>
+		  				<f:facet name="header">Nombre</f:facet>
 		  				<!-- row record -->
-		  				#{u.username}
+		  				#{e.nombre}
 		  			</h:column>
 		
 		  			<h:column>
-		  				<f:facet name="header">Rol</f:facet>
-		  				#{u.rol.nombre}
-		  			</h:column>
-		
-		  			<h:column>
-		  				<f:facet name="header">Activo ?</f:facet>
-		  				#{u.activo}
+		  				<f:facet name="header">Descripcion</f:facet>
+		  				#{e.descripcion}
 		  			</h:column>
 		 			<h:column>
 		  				<f:facet name="header">Acciones</f:facet>
 		  				
-						<h:commandLink action="#{usuarioBean.desactivarUsuario}" value="Desactivar" rendered="#{u.activo==true}">
-						    <f:param name="id" value="#{u.username}" />
-						</h:commandLink>
-						<h:commandLink action="#{usuarioBean.activarUsuario}" value="Activar" rendered="#{u.activo==false}">
-						    <f:param name="id" value="#{u.username}" />
+						
 						</h:commandLink>
 		  			</h:column>
 		    </h:dataTable> 	
  		</h:panelGrid>
  	</h:form>
 	<h:form>
-	   <!-- <p:editor value="#{usuarioBean.value}" />  -->
+	   <!-- <p:editor value="" />  -->
 	</h:form>
  
 </h:body>

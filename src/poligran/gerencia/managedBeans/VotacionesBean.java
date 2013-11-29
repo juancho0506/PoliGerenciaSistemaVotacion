@@ -16,6 +16,8 @@ import poligran.gerencia.jpa.dao.VotoDAO;
 import poligran.gerencia.jpa.dao.impl.DefaultCandidatoDAO;
 import poligran.gerencia.jpa.dao.impl.DefaultEleccionDAO;
 import poligran.gerencia.jpa.dao.impl.DefaultVotoDAO;
+import poligran.gerencia.jpa.entities.Candidato;
+import poligran.gerencia.jpa.entities.Eleccion;
 import poligran.gerencia.jpa.entities.Usuario;
 
 /**
@@ -25,14 +27,16 @@ import poligran.gerencia.jpa.entities.Usuario;
 @ManagedBean(name="votacionesoBean")
 public class VotacionesBean {
 	
-	private List<Usuario> usuarios = new ArrayList<Usuario>();
-	
-	private String value = "This editor is provided by PrimeFaces";
+	private List<Eleccion> elecciones = new ArrayList<Eleccion>();
+	private List<Candidato> candidatos = new ArrayList<Candidato>();
+	private Eleccion eleccionActual = null;
 	
 	private String message = "";
 	private EleccionDAO eleccionDAO;
 	private CandidatoDAO candidatoDAO;
 	private VotoDAO votoDAO;
+	private boolean mostrarCandidatos = false;
+	private boolean votoRealizado;
 	 
 	/**
 	 * 
@@ -42,17 +46,17 @@ public class VotacionesBean {
 		candidatoDAO = new DefaultCandidatoDAO();
 		votoDAO = new DefaultVotoDAO();
 		try {
-			//usuarios = usuarioServ.listarUsuarios();
+			elecciones = eleccionDAO.loadAll();
 		} catch (Exception e) {
 			message = "ERROR no se pudo crear la instancia de la pagina!";
 		}
 	}
 	
-	public String activarUsuario(){
+	public String votarCandidato(){
 		try {
 			FacesContext fc = FacesContext.getCurrentInstance();
 			Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
-			String username = params.get("id");
+			String idCandidato = params.get("id");
 			//usuarioServ.activarUsuario(username);
 			message = "INFO: Usuario activado con EXITO.";
 		}catch(Exception e){
@@ -63,55 +67,80 @@ public class VotacionesBean {
 		return "EXITO";
 	}
 	
-	public String desactivarUsuario(){
-		try {
-			FacesContext fc = FacesContext.getCurrentInstance();
-			Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
-			String username = params.get("id");
-			//usuarioServ.desactivarUsuario(username);
-			message = "INFO: Usuario desactivado con EXITO.";
-		}catch(Exception e){
-			e.printStackTrace();
-			message = "ERROR no se pudo crear la instancia de la pagina!";
-			
-		}
+	public String loadCandidatesElection(){
+		candidatos = new ArrayList<Candidato>();
+		FacesContext fc = FacesContext.getCurrentInstance();
+		Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
+		String eleccionId = params.get("id");
+		Eleccion e = eleccionDAO.getEleccion(Integer.parseInt(eleccionId));
+		
+		candidatos = candidatoDAO.loadByElection(e);
+		mostrarCandidatos = true;
 		return "EXITO";
 	}
 
-	/**
-	 * @return the usuarios
-	 */
-	public List<Usuario> getUsuarios() {
-		return usuarios;
+	public List<Eleccion> getElecciones() {
+		return elecciones;
 	}
 
-	/**
-	 * @param usuarios the usuarios to set
-	 */
-	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
+	public void setElecciones(List<Eleccion> elecciones) {
+		this.elecciones = elecciones;
 	}
 
-	public String getValue() {
-		return value;
-	}
- 
-	public void setValue(String value) {
-		this.value = value;
+	public List<Candidato> getCandidatos() {
+		return candidatos;
 	}
 
-	/**
-	 * @return the message
-	 */
+	public void setCandidatos(List<Candidato> candidatos) {
+		this.candidatos = candidatos;
+	}
+
 	public String getMessage() {
 		return message;
 	}
 
-	/**
-	 * @param message the message to set
-	 */
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public EleccionDAO getEleccionDAO() {
+		return eleccionDAO;
+	}
+
+	public void setEleccionDAO(EleccionDAO eleccionDAO) {
+		this.eleccionDAO = eleccionDAO;
+	}
+
+	public CandidatoDAO getCandidatoDAO() {
+		return candidatoDAO;
+	}
+
+	public void setCandidatoDAO(CandidatoDAO candidatoDAO) {
+		this.candidatoDAO = candidatoDAO;
+	}
+
+	public VotoDAO getVotoDAO() {
+		return votoDAO;
+	}
+
+	public void setVotoDAO(VotoDAO votoDAO) {
+		this.votoDAO = votoDAO;
+	}
+
+	public boolean isVotoRealizado() {
+		return votoRealizado;
+	}
+
+	public void setVotoRealizado(boolean votoRealizado) {
+		this.votoRealizado = votoRealizado;
+	}
+
+	public boolean isMostrarCandidatos() {
+		return mostrarCandidatos;
+	}
+
+	public void setMostrarCandidatos(boolean mostrarCandidatos) {
+		this.mostrarCandidatos = mostrarCandidatos;
 	}
 	
 }
