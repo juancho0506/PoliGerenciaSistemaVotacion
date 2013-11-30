@@ -18,7 +18,7 @@ import poligran.gerencia.jpa.dao.impl.DefaultEleccionDAO;
 import poligran.gerencia.jpa.dao.impl.DefaultVotoDAO;
 import poligran.gerencia.jpa.entities.Candidato;
 import poligran.gerencia.jpa.entities.Eleccion;
-import poligran.gerencia.jpa.entities.Usuario;
+import poligran.gerencia.jpa.entities.Voto;
 
 /**
  * @author Rodrigo Torres
@@ -30,6 +30,7 @@ public class VotacionesBean {
 	private List<Eleccion> elecciones = new ArrayList<Eleccion>();
 	private List<Candidato> candidatos = new ArrayList<Candidato>();
 	private Eleccion eleccionActual = null;
+	private String username = "admin";
 	
 	private String message = "";
 	private EleccionDAO eleccionDAO;
@@ -57,12 +58,19 @@ public class VotacionesBean {
 			FacesContext fc = FacesContext.getCurrentInstance();
 			Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
 			String idCandidato = params.get("id");
-			//usuarioServ.activarUsuario(username);
+			Candidato c = candidatoDAO.getCandidato(Integer.parseInt(idCandidato));
+			Voto v = new Voto();
+			v.setEleccion(eleccionActual);
+			v.setCandidato(c);
+			v.setUsuario(username);
+			votoDAO.registrarVoto(v);
 			message = "INFO: Usuario activado con EXITO.";
+			System.out.println("INFO: Usuario activado con EXITO.");
 		}catch(Exception e){
+			System.out.println("ERROR no se pudo crear la instancia de la pagina!");
 			e.printStackTrace();
 			message = "ERROR no se pudo crear la instancia de la pagina!";
-			
+			return "ERROR";
 		}
 		return "EXITO";
 	}
@@ -73,7 +81,7 @@ public class VotacionesBean {
 		Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
 		String eleccionId = params.get("id");
 		Eleccion e = eleccionDAO.getEleccion(Integer.parseInt(eleccionId));
-		
+		eleccionActual = e;
 		candidatos = candidatoDAO.loadByElection(e);
 		mostrarCandidatos = true;
 		return "EXITO";
@@ -142,5 +150,12 @@ public class VotacionesBean {
 	public void setMostrarCandidatos(boolean mostrarCandidatos) {
 		this.mostrarCandidatos = mostrarCandidatos;
 	}
-	
+
+	public Eleccion getEleccionActual() {
+		return eleccionActual;
+	}
+
+	public void setEleccionActual(Eleccion eleccionActual) {
+		this.eleccionActual = eleccionActual;
+	}
 }

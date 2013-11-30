@@ -3,7 +3,6 @@
  */
 package poligran.gerencia.jpa.entities;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -36,9 +35,6 @@ public class Eleccion {
 	private Integer idEleccion;
 	
 	@Column
-	private Date fechaNaciemto;
-	
-	@Column
 	private String nombre;
 	
 	@Column
@@ -55,14 +51,6 @@ public class Eleccion {
 
 	public void setIdEleccion(Integer id) {
 		this.idEleccion = id;
-	}
-
-	public Date getFechaNaciemto() {
-		return fechaNaciemto;
-	}
-
-	public void setFechaNaciemto(Date fechaNaciemto) {
-		this.fechaNaciemto = fechaNaciemto;
 	}
 
 	public String getNombre() {

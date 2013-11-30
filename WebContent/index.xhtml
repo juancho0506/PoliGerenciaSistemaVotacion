@@ -12,7 +12,7 @@
 </h:head>
 <h:body>
 	<h1>Escoga una Eleccion para Votar por un Candidato</h1><br/>
- 	<div style="color:red"><h2>#{reserva.message}</h2></div>
+ 	<div style="color:red"><h2>#{votacionesoBean.message}</h2></div>
  	<h:form>
 	 	<h:panelGrid>
 	 		<h2>Elecciones Registrados</h2>
@@ -31,15 +31,44 @@
 		  			</h:column>
 		 			<h:column>
 		  				<f:facet name="header">Acciones</f:facet>
-		  				
-						
-						</h:commandLink>
+		  				<h:commandLink action="#{votacionesoBean.loadCandidatesElection}" value="Ver">
+					    	<f:param name="id" value="#{e.idEleccion}" />
+						</h:commandLink>	
 		  			</h:column>
 		    </h:dataTable> 	
  		</h:panelGrid>
- 	</h:form>
-	<h:form>
-	   <!-- <p:editor value="" />  -->
+ 		<div style="float: right;">
+ 			<h:panelGrid rendered="#{votacionesoBean.mostrarCandidatos}">
+	 			<h2>Candidatos Postulados</h2>
+		 		<h:dataTable value="#{votacionesoBean.candidatos}" var="c">
+			 
+			 			<h:column>
+			  				<!-- column header -->
+			  				<f:facet name="header">Documento</f:facet>
+			  				<!-- row record -->
+			  				#{c.numID}
+			  			</h:column>
+			 
+			  			<h:column>
+			  				<!-- column header -->
+			  				<f:facet name="header">Nombre Completo</f:facet>
+			  				<!-- row record -->
+			  				#{c.nombreCompleto}
+			  			</h:column>
+			
+			  			<h:column>
+			  				<f:facet name="header">Fecha Nacimiento</f:facet>
+			  				#{c.fechaNaciemto}
+			  			</h:column>
+			 			<h:column>
+			  				<f:facet name="header">Acciones</f:facet>
+			  				<h:commandLink action="#{votacionesoBean.votarCandidato}" value="Votar">
+						    	<f:param name="id" value="#{c.numID}" />
+							</h:commandLink>	
+			  			</h:column>
+			    </h:dataTable>
+		    </h:panelGrid>
+ 		</div>
 	</h:form>
  
 </h:body>
